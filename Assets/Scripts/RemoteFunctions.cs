@@ -8,9 +8,8 @@ public class RemoteFunctions : MonoBehaviour
         
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnButtonClick(SoundEventType eventType)
     {
-        
+        EventManager.Instance.TriggerEvent(eventType);
     }
 }
