@@ -1,61 +1,42 @@
 using UnityEngine;
-
 public class AudioManager : MonoBehaviour
 {
-    [Header("Audio clip and sources")]
-    public AudioClip RemoteSound;
+    public static AudioManager Instance;
+
     public AudioSource KeySource;
+    public AudioSource FallSource;
     public AudioSource GlassesSource;
-    public AudioSource FallTrackerSource;
     public AudioSource PillsSource;
+    public AudioSource DispenserSource;
+    public AudioClip ItsTime;
+    public AudioClip Beep;
+    private float volume = 0.3f;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void Start()
     {
-        KeySource = GetComponent<AudioSource>();
-        GlassesSource = GetComponent<AudioSource>();
-        FallTrackerSource = GetComponent<AudioSource>();
-        PillsSource = GetComponent<AudioSource>();
-        EventManager.Instance.StartListening(SoundEventType.Keys, OnKeyClicked);
-        EventManager.Instance.StartListening(SoundEventType.Glasses, OnGlassesClicked);
-        EventManager.Instance.StartListening(SoundEventType.FallTracker, OnFallTrackerClicked);
-        EventManager.Instance.StartListening(SoundEventType.Pills, OnPillsClicked);
+        PlaySound(DispenserSource, ItsTime);
+    }
+    public void PlayKeySound()
+    {
+        PlaySound(KeySource, Beep);
     }
 
-    public void OnKeyClicked()
+    public void PlayFallSound()
     {
-        PlaySoundEffect(KeySource, RemoteSound);
+        PlaySound(FallSource, Beep);
     }
 
-    public void OnGlassesClicked()
+    public void PlayGlassesSound()
     {
-        PlaySoundEffect(GlassesSource, RemoteSound);
+        PlaySound(GlassesSource, Beep);
     }
 
-    public void OnFallTrackerClicked()
+    public void PlayPillsSound()
     {
-        PlaySoundEffect(FallTrackerSource, RemoteSound);
+        PlaySound(PillsSource, Beep);
     }
-
-    public void OnPillsClicked()
+    public void PlaySound(AudioSource source, AudioClip clip)
     {
-        PlaySoundEffect(PillsSource, RemoteSound);
-    }
-    
-    private void PlaySoundEffect(AudioSource source, AudioClip clip)
-    {
-        if (clip == null) return;
-        source.PlayOneShot(clip);
-    }
-
-    private void OnDestroy()
-    {
-        if(EventManager.Instance != null)
-        {
-            EventManager.Instance.StopListening(SoundEventType.Keys, OnKeyClicked);
-            EventManager.Instance.StopListening(SoundEventType.Glasses, OnGlassesClicked);
-            EventManager.Instance.StopListening(SoundEventType.FallTracker, OnFallTrackerClicked);
-            EventManager.Instance.StopListening(SoundEventType.Pills, OnPillsClicked);
-        }
+        source.PlayOneShot(clip, volume);
     }
 }

@@ -8,8 +8,5 @@ public class RemoteFunctions : MonoBehaviour
         
     }
 
-    public void OnButtonClick(SoundEventType eventType)
-    {
-        EventManager.Instance.TriggerEvent(eventType);
-    }
+    
 }
