@@ -2814,6 +2814,7 @@ MonoBehaviour:
   m_depthSubmissionMode: 0
   m_optimizeBufferDiscards: 0
   m_symmetricProjection: 0
+  m_foveatedRenderingApi: 0
 --- !u!114 &9146482871804972338
 MonoBehaviour:
   m_ObjectHideFlags: 0
