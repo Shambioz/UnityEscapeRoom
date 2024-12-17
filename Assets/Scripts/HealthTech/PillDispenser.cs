@@ -88,6 +88,10 @@ public class PillDispenser : MonoBehaviour
             if(currentPills <= 0)
             {
                 currentState = PillDispenserState.Empty;
+                if (TaskManager.Instance != null)
+                {
+                    TaskManager.Instance.CompleteTask("Pill Dispenser");
+                }
             }
             else
             {
@@ -95,7 +99,6 @@ public class PillDispenser : MonoBehaviour
             }
         }
     }
-
     // Update is called once per frame
     void Update()
     {

@@ -36,6 +36,10 @@ public class SnapZone : MonoBehaviour
             rb.useGravity = false;
             XRGrabInteractable XRGrabInteractable = fallTracker.GetComponent<XRGrabInteractable>();
             XRGrabInteractable.enabled = false;
+            if (TaskManager.Instance != null)
+            {
+                TaskManager.Instance.CompleteTask("Fall Tracker");
+            }
         }
     }
 
