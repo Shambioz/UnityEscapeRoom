@@ -12,6 +12,9 @@ public class Door : MonoBehaviour
     public int count = 0;
     private Quaternion angleClosed;
     private Quaternion angleOpened;
+    public AudioSource audioSource;
+    public AudioClip[] audioClips;
+    public AudioClip closing;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -22,7 +25,7 @@ public class Door : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("ENTER: " + other.name);
-        if (other.CompareTag("Player") || other.CompareTag("OldMan"))
+        if (other.CompareTag("Controller") || other.CompareTag("OldMan"))
         {
             int oldCount = count;
             count++;
@@ -36,7 +39,7 @@ public class Door : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         Debug.Log("EXIT: " + other.name);
-        if (other.CompareTag("Player") || other.CompareTag("OldMan"))
+        if (other.CompareTag("Controller") || other.CompareTag("OldMan"))
         {
             int oldCount = count;
             count = Mathf.Max(count - 1, 0);
@@ -51,7 +54,10 @@ public class Door : MonoBehaviour
     {
         isOpen = true;
         float elapsed = 0f;
-        while(elapsed < duration)
+        int random = Random.Range(0, audioClips.Length);
+        AudioClip randomCLip = audioClips[random];
+        AudioManager.Instance.PlaySound(audioSource, randomCLip);
+        while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
             float t = elapsed / duration;
@@ -74,6 +80,7 @@ public class Door : MonoBehaviour
             doorTrnsform.localRotation = Quaternion.Slerp(angleOpened, angleClosed, curveValue);
             yield return null;
         }
+        AudioManager.Instance.PlaySound(audioSource, closing);
         doorTrnsform.localRotation = angleClosed;
     }
 }

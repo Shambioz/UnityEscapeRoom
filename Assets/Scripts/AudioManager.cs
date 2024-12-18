@@ -12,6 +12,18 @@ public class AudioManager : MonoBehaviour
     public AudioClip Beep;
     private float volume = 0.3f;
 
+    private void Awake()
+    {
+        if(Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     public void Start()
     {
         PlaySound(DispenserSource, ItsTime);
