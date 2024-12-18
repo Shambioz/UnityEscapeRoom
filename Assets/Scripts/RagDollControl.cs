@@ -10,9 +10,14 @@ public class RagDollControl : MonoBehaviour
     private Animator animator;
     public Clock Clock;
     private RandomMoveAi RandomMoveAi;
-    public GameObject Wolk;
+    private GameObject Wolk;
     private AgentState currentstate = AgentState.Walking;
-    public SkinnedMeshRenderer WolkMeshRenderer;
+    private SkinnedMeshRenderer WolkMeshRenderer;
+    public AudioSource Inflate;
+    public AudioSource FallingOver;
+    private float fallstart;
+    public float FallSoundDelay;
+    private bool InflateSoundPlayed = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
@@ -76,10 +81,12 @@ public class RagDollControl : MonoBehaviour
         navMeshAgent.enabled = true;
         animator.enabled = true;
         RandomMoveAi.enabled = true;
+        InflateSoundPlayed = false;
     }
 
     private void EnableRagdoll()
     {
+        fallstart = Time.time;
         foreach (var rigidbody in kinematics)
         {
             rigidbody.isKinematic = false;
@@ -88,7 +95,19 @@ public class RagDollControl : MonoBehaviour
         animator.enabled = false;
         RandomMoveAi.enabled = false;
 
-        if (WolkMeshRenderer != null)
+        if (fallstart != 0 && InflateSoundPlayed == false) 
+        {
+            Inflate.Play();
+            InflateSoundPlayed = true;
+
+            if (Time.time + FallSoundDelay >= fallstart)
+            {
+                FallingOver.Play();
+                fallstart = 0;
+            }
+        }
+
+            if (WolkMeshRenderer != null)
         {
             WolkMeshRenderer.SetBlendShapeWeight(0, 100f);
         }
