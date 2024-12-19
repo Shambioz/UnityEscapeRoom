@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.XR;
@@ -11,13 +12,15 @@ public class RagDollControl : MonoBehaviour
     public Clock Clock;
     private RandomMoveAi RandomMoveAi;
     private GameObject Wolk;
-    private AgentState currentstate = AgentState.Walking;
+    public AgentState currentstate = AgentState.Walking;
     private SkinnedMeshRenderer WolkMeshRenderer;
     public AudioSource Inflate;
     public AudioSource FallingOver;
     private float fallstart;
     public float FallSoundDelay;
     private bool InflateSoundPlayed = false;
+    public bool diedonce;
+    public bool querevive;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
@@ -42,7 +45,7 @@ public class RagDollControl : MonoBehaviour
         }
     }
 
-    private enum AgentState
+    public enum AgentState
     {
         Walking,
         Ragdoll
@@ -51,13 +54,6 @@ public class RagDollControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Temp Input Method
-        if (Clock.GameTime >= deathtimer)
-        {
-            Debug.Log("10 seconds have passed since the game started!");
-            currentstate = AgentState.Ragdoll;
-        }
-
         switch (currentstate) 
         {
             case AgentState.Walking:
@@ -68,11 +64,9 @@ public class RagDollControl : MonoBehaviour
                 RagDollBehavior(); 
                 break;
         }
-
-        
     }
 
-    private void DisableRagdoll()
+    public void DisableRagdoll()
     {
         foreach (var rigidbody in kinematics)
         {
@@ -113,7 +107,7 @@ public class RagDollControl : MonoBehaviour
         }
     }
 
-    private void WalkingBehavior()
+    public void WalkingBehavior()
     {
         DisableRagdoll();
         currentstate = AgentState.Walking;
