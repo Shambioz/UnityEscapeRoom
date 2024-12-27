@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ee009f9ce97419c92d6f466041a99fe, type: 3}
+  m_Name: Grass
+  m_EditorClassIdentifier: 
+  MapSize: 256
+  RandomSeed: 1
+  Mesh: {fileID: -9052636357103505650, guid: b6468b0237ddb7c4faf52835547be012, type: 3}
+  InstanceMaterial: {fileID: 3898361765085933962, guid: 1b56e8baa29a18746973cda8456eb231, type: 3}
+  ExcludeLayers: []
+  SpawnExcludeThreshold: 1
+  IncludeLayers: []
+  SpawnIncludeThreshold: 1
+  GrassDensity: 1
