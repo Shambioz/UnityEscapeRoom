@@ -5,10 +5,12 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class DoorInteract : MonoBehaviour
 {
+    private const string DOOR = "Door";
     public Transform doorTransform;
     public float angleOpened = 100f;
     public float movingTime = 0.5f;
-    public AnimationCurve curve = AnimationCurve.EaseInOut(0,0,1,1);
+    public Animator animator;
+    
     private XRGrabInteractable interactable;
     private bool isOpen = false;
     private Coroutine rotate;
@@ -17,13 +19,18 @@ public class DoorInteract : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if(animator == null)
+        {
+            animator = GetComponent<Animator>();
+        }
+        animator.SetBool(DOOR, false);
         if(doorTransform == null)
         {
             doorTransform = transform;
         }
 
-        closed = doorTransform.localRotation;
-        opened = closed * Quaternion.Euler(closed.x, angleOpened, closed.z);
+        /*closed = doorTransform.localRotation;
+        opened = closed * Quaternion.Euler(0, 0, angleOpened);*/
         interactable = GetComponent<XRGrabInteractable>();
         if(interactable != null )
         {
@@ -38,19 +45,28 @@ public class DoorInteract : MonoBehaviour
             interactable.selectEntered.RemoveListener(OnInteracted);
         }
     }
-
+    
     private void OnInteracted(SelectEnterEventArgs e)
     {
+        Debug.Log("sure");
         isOpen = !isOpen;
-        Quaternion target = isOpen ? opened : closed;
-        if(rotate != null)
+        if(isOpen)
         {
-            StopCoroutine(rotate);
+            animator.SetBool(DOOR, true);
         }
-        rotate = StartCoroutine(RotateDoor(target, movingTime));
-    }
+        if (!isOpen)
+        {
+            animator.SetBool(DOOR, false);
+        }
 
-    private IEnumerator RotateDoor(Quaternion target, float duration)
+        /* Quaternion target = isOpen ? opened : closed;
+         if(rotate != null)
+         {
+             StopCoroutine(rotate);
+         }
+         rotate = StartCoroutine(RotateDoor(target, movingTime));*/
+    }
+    /*private IEnumerator RotateDoor(Quaternion target, float duration)
     {
         Quaternion start = doorTransform.localRotation;
         float elapsed = 0f;
@@ -64,5 +80,5 @@ public class DoorInteract : MonoBehaviour
         }
         doorTransform.localRotation = target;
         rotate = null;
-    }
+    }*/
 }
