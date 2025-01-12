@@ -20,7 +20,7 @@ public class DoorAnimation : MonoBehaviour
         {
             Debug.Log("entered");
             if(AudioClip != null && AudioSource != null && !opened)
-            {
+            { 
                 AudioManager.Instance.PlaySound(AudioSource, AudioClip);
                 joint.useMotor = true;
                 opened = true;
