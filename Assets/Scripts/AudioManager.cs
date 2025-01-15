@@ -26,8 +26,9 @@ public class AudioManager : MonoBehaviour
     }
     public void Start()
     {
-        PlaySound(DispenserSource, ItsTime);
+        
     }
+
     public void PlayKeySound()
     {
         PlaySound(KeySource, Beep);
@@ -49,6 +50,7 @@ public class AudioManager : MonoBehaviour
     }
     public void PlaySound(AudioSource source, AudioClip clip)
     {
+        Debug.Log(source.name);
         source.Stop();
         source.PlayOneShot(clip, volume);
     }

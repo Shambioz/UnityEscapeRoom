@@ -6,58 +6,78 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public enum PillDispenserState
 {
-    Empty,
+    Closed,
+    Opened,
+    Transition,
     Loaded,
-    Dispensing
+    Dispensing,
+    Dispensed
 }
 public class PillDispenser : MonoBehaviour
 {
     public XRGrabInteractable grabInteractable;
+    public XRGrabInteractable lidInteractable;
     public GameObject pill;
+    public GameObject Lid;
     public Transform dispense;
-    public PillDispenserState currentState = PillDispenserState.Empty;
+    public PillDispenserState currentState = PillDispenserState.Opened;
     public int currentPills = 0;
-    public int maxPills = 10;
+    public int maxPills = 3;
     public AudioClip NoPills;
     public AudioClip PillsLoaded;
     public AudioClip PillsDispensing;
+    public AudioClip ItsTime;
     public AudioSource audioSource;
     public AudioManager audioManager;
+    public GameObject colliderForPills;
+    public Canvas canvas1;
+    public Canvas canvas2;
+    public Canvas canvas3;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if(grabInteractable != null)
+        AudioManager.Instance.PlaySound(audioSource, ItsTime);
+        lidInteractable = Lid.GetComponent<XRGrabInteractable>();
+        canvas1.gameObject.SetActive(true);
+        canvas2.gameObject.SetActive(false);
+        canvas3.gameObject.SetActive(false);
+        if(lidInteractable != null)
         {
-            grabInteractable.selectEntered.AddListener(OnGrabbed);
+            lidInteractable.selectEntered.AddListener(OnLidGrabbed);
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnLidGrabbed(SelectEnterEventArgs args)
     {
-        if (other.CompareTag("Pills"))
+        if(currentState == PillDispenserState.Opened || currentState == PillDispenserState.Closed)
         {
-            Destroy(other.gameObject);
-            LoadPills();
+            HingeJoint joint = Lid.GetComponent<HingeJoint>();
+            JointMotor jointMotor = joint.motor;
+            jointMotor.targetVelocity = jointMotor.targetVelocity * -1;
+            joint.motor = jointMotor;
+
+            if (currentState == PillDispenserState.Closed)
+            {
+                currentState = PillDispenserState.Opened;
+            }
+            else if(currentState == PillDispenserState.Opened)
+            {
+                currentState = PillDispenserState.Closed;
+            }
         }
     }
 
-
-    private void OnGrabbed(SelectEnterEventArgs args)
+    public void CloseLid()
     {
-        Debug.Log("Grabbed");
-        if(currentState == PillDispenserState.Empty)
-        {
-            audioManager.PlaySound(audioSource, NoPills);
-        }
-        else if(currentState == PillDispenserState.Loaded)
-        {
-            StartDispensing();
-        }
+        HingeJoint joint = Lid.GetComponent<HingeJoint>();
+        JointMotor jointMotor = joint.motor;
+        jointMotor.targetVelocity = jointMotor.targetVelocity * -1;
+        joint.motor = jointMotor;
     }
 
     public void LoadPills()
     {
-        currentPills = 10;
+        currentPills = maxPills;
         if(currentPills > 0)
         {
             currentState = PillDispenserState.Loaded;
@@ -71,6 +91,10 @@ public class PillDispenser : MonoBehaviour
         {
             currentState = PillDispenserState.Dispensing;
             StartCoroutine(Dispense());
+        }
+        else
+        {
+            AudioManager.Instance.PlaySound(audioSource, NoPills);
         }
     }
 
@@ -87,7 +111,9 @@ public class PillDispenser : MonoBehaviour
             }
             if(currentPills <= 0)
             {
-                currentState = PillDispenserState.Empty;
+                currentState = PillDispenserState.Closed;
+                canvas1.gameObject.SetActive(false);
+                canvas2.gameObject.SetActive(true);
                 if (TaskManager.Instance != null)
                 {
                     TaskManager.Instance.CompleteTask("Pill Dispenser");
@@ -98,6 +124,12 @@ public class PillDispenser : MonoBehaviour
                 currentState = PillDispenserState.Loaded;
             }
         }
+    }
+
+    public void ChangeUI()
+    {
+        canvas2.gameObject.SetActive(false);
+        canvas3.gameObject.SetActive(true);
     }
     // Update is called once per frame
     void Update()
