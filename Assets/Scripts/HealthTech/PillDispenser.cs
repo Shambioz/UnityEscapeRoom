@@ -87,6 +87,7 @@ public class PillDispenser : MonoBehaviour
 
     public void StartDispensing()
     {
+        Debug.Log("registered");
         if(currentState == PillDispenserState.Loaded && currentPills > 0)
         {
             currentState = PillDispenserState.Dispensing;

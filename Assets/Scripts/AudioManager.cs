@@ -36,6 +36,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlayFallSound()
     {
+        Debug.Log("Fall");
         PlaySound(FallSource, Beep);
     }
 
