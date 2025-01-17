@@ -19,8 +19,8 @@ TagManager:
   - Boom
   - HeatMapLayer
   - Door
-  - 
-  - 
+  - Interactable
+  - Walls
   - 
   - 
   - HighLight
