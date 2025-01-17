@@ -13,6 +13,7 @@ public class Voiceovers : MonoBehaviour
     private Collider trigger;
     private float interval = 20f;
     private Coroutine timer;
+    public bool isFirstEnded = false;
 
 
     void Start()

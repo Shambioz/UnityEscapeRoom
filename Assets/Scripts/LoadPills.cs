@@ -28,7 +28,7 @@ public class LoadPills : MonoBehaviour
         rb.isKinematic = true;
         XRGrabInteractable xRGrabInteractable = obj.GetComponent<XRGrabInteractable>();
         xRGrabInteractable.enabled = false;
-        Collider[] colliders = GetComponentsInChildren<Collider>();
+        Collider[] colliders = obj.GetComponentsInChildren<Collider>();
         foreach(Collider collider in colliders)
         {
             collider.enabled = false;
