@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEditor.SpeedTree.Importer;
 using UnityEngine;
 
@@ -5,7 +6,7 @@ public class AddHighlight : MonoBehaviour
 {
     public Material blinkingMaterial; // The material to blink with
     private Material originalMaterial; // The original material of the object
-    private Renderer objectRenderer; // The renderer component of the object
+    public Renderer objectRenderer; // The renderer component of the object
 
     public float blinkInterval = 0.5f; // Time interval for blinking
     private float timer;
@@ -13,7 +14,10 @@ public class AddHighlight : MonoBehaviour
     void Start()
     {
         // Get the Renderer component of the GameObject
-        objectRenderer = GetComponent<Renderer>();
+        if(objectRenderer == null)
+        {
+            objectRenderer = GetComponent<Renderer>();
+        }
 
         // Store the original material
         if (objectRenderer != null)
@@ -55,12 +59,29 @@ public class AddHighlight : MonoBehaviour
     // Public method to start/stop the blinking effect
     public void ToggleBlinking()
     {
-        isBlinking = !isBlinking;
-
+        /*isBlinking = !isBlinking;
         // Reset to the original material when stopping the blinking
         if (!isBlinking && objectRenderer != null)
         {
             objectRenderer.material = originalMaterial;
         }
+        float timerr = 0f;
+        while(timerr <= 300f)
+        {
+            Debug.Log("timer");
+            timerr += Time.deltaTime;
+        }
+        isBlinking = !isBlinking;
+        objectRenderer.material = originalMaterial;*/
+        StartCoroutine(Timer());
+    }
+
+    private IEnumerator Timer()
+    {
+        isBlinking = !isBlinking;
+        yield return new WaitForSeconds(5f);
+        isBlinking = !isBlinking;
+        objectRenderer.material = originalMaterial;
+
     }
 }

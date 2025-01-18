@@ -30,6 +30,7 @@ public class PillDispenser : MonoBehaviour
     public AudioSource audioSource;
     public AudioManager audioManager;
     public GameObject colliderForPills;
+    public Canvas canvas0;
     public Canvas canvas1;
     public Canvas canvas2;
     public Canvas canvas3;
@@ -38,7 +39,8 @@ public class PillDispenser : MonoBehaviour
     {
         AudioManager.Instance.PlaySound(audioSource, ItsTime);
         lidInteractable = Lid.GetComponent<XRGrabInteractable>();
-        canvas1.gameObject.SetActive(true);
+        canvas0.gameObject.SetActive(true);
+        canvas1.gameObject.SetActive(false);
         canvas2.gameObject.SetActive(false);
         canvas3.gameObject.SetActive(false);
         if(lidInteractable != null)
@@ -77,6 +79,8 @@ public class PillDispenser : MonoBehaviour
 
     public void LoadPills()
     {
+        canvas0.gameObject.SetActive(false);
+        canvas1.gameObject.SetActive(true);
         currentPills = maxPills;
         if(currentPills > 0)
         {
