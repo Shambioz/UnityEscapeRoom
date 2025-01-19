@@ -11,11 +11,17 @@ public class LidClamper : MonoBehaviour
     public Transform originalPosition;
     private XRGrabInteractable interactable;
     private bool isSnapped = false;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip clip;
     private Coroutine moving;
     public float moveTime = 0.5f;
     public AnimationCurve movementCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
     void Start()
     {
+        if(audioSource == null)
+        {
+            audioSource = GetComponentInChildren<AudioSource>();
+        }
         if (objectToMove == null)
         {
             objectToMove = transform;
@@ -49,6 +55,10 @@ public class LidClamper : MonoBehaviour
     {
         Vector3 startPosition = objectToMove.position;
         float elapsed = 0f;
+        if(audioSource != null && clip != null)
+        {
+            PlayAudio();
+        }
         while(elapsed < time)
         {
             elapsed += Time.deltaTime;
@@ -59,5 +69,10 @@ public class LidClamper : MonoBehaviour
         }
         objectToMove.position = target;
         moving = null;
+    }
+
+    private void PlayAudio()
+    {
+        AudioManager.Instance.PlaySound(audioSource, clip);
     }
 }

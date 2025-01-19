@@ -5,7 +5,7 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 public class FallTracker : MonoBehaviour
 {
     private XRGrabInteractable XRGrabInteractable;
-    private SnapZone SnapZone;
+    public SnapZone SnapZone;
 
     private void Awake()
     {
