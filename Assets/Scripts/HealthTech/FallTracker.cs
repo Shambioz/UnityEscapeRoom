@@ -15,7 +15,6 @@ public class FallTracker : MonoBehaviour
     private void OnEnable()
     {
         XRGrabInteractable.selectEntered.AddListener(OnGrabbed);
-        XRGrabInteractable.selectExited.AddListener(OnReleased);
     }
 
     private void OnGrabbed(SelectEnterEventArgs e)
@@ -27,14 +26,6 @@ public class FallTracker : MonoBehaviour
         if(SnapZone !=  null)
         {
             SnapZone.Highlight(true);
-        }
-    }
-
-    private void OnReleased(SelectExitEventArgs e)
-    {
-        if(SnapZone != null)
-        {
-            SnapZone.Highlight(false);
         }
     }
 }
