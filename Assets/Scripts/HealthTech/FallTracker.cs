@@ -35,7 +35,6 @@ public class FallTracker : MonoBehaviour
         if(SnapZone != null)
         {
             SnapZone.Highlight(false);
-            SnapZone.Snap();
         }
     }
 }

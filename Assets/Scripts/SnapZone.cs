@@ -21,12 +21,13 @@ public class SnapZone : MonoBehaviour
         if (other.CompareTag("FallTracker"))
         {
             isSnapped = true;
+            Snap();
         }
     }
 
     public void Snap()
     {
-        if(snapPoint != null)
+        if(snapPoint != null && isSnapped)
         {
             fallTracker.transform.position = snapPoint.position;
             fallTracker.transform.rotation = snapPoint.rotation;
