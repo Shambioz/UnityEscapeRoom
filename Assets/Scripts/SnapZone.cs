@@ -7,33 +7,35 @@ public class SnapZone : MonoBehaviour
     [SerializeField] private Transform snapPoint;
     [SerializeField] private Transform snapPointHip;
     [SerializeField] private Transform snapPointGlasses;
+    [SerializeField] private MeshRenderer fallTrackerArea;
+    [SerializeField] private MeshRenderer hip;
+    [SerializeField] private MeshRenderer glasses;
     public MeshRenderer MeshRenderer;
     public bool isSnapped = false;
     public GameObject fallTracker;
 
-    public void Highlight(bool highlight)
+    public void Highlight(bool highlight, MeshRenderer meshRenderer)
     {
-        if(MeshRenderer != null)
-        {
-            MeshRenderer.enabled = highlight;
-        }
+         meshRenderer.enabled = highlight;
     }
+
+
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("FallTracker"))
         {
-            Highlight(false);
+            Highlight(false, fallTrackerArea);
             Snap(other.gameObject);
         }
         else if (other.CompareTag("HipBag"))
         {
-            Highlight(false);
+            Highlight(false, hip);
             SnapHip(other.gameObject);
         }
         else if (other.CompareTag("Glasses"))
         {
-            Highlight(false);
+            Highlight(false, glasses);
             SnapGlasses(other.gameObject);
         }
     }
@@ -84,6 +86,10 @@ public class SnapZone : MonoBehaviour
             rb.useGravity = false;
             XRGrabInteractable XRGrabInteractable = snappedObject.GetComponent<XRGrabInteractable>();
             XRGrabInteractable.enabled = false;
+            if (TaskManager.Instance != null)
+            {
+                TaskManager.Instance.CompleteTask("Glasses");
+            }
         }
     }
 }

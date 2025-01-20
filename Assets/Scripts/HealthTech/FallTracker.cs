@@ -5,7 +5,7 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 public class FallTracker : MonoBehaviour
 {
     private XRGrabInteractable XRGrabInteractable;
-    public SnapZone SnapZone;
+    [SerializeField] private SnapZone SnapZone;
 
     private void Awake()
     {
@@ -15,13 +15,24 @@ public class FallTracker : MonoBehaviour
     private void OnEnable()
     {
         XRGrabInteractable.selectEntered.AddListener(OnGrabbed);
+        XRGrabInteractable.selectExited.AddListener(OnRelease);
     }
 
     private void OnGrabbed(SelectEnterEventArgs e)
     {
         if(SnapZone !=  null)
         {
-            SnapZone.Highlight(true);
+            MeshRenderer meshRenderer = SnapZone.MeshRenderer;
+            SnapZone.Highlight(true, meshRenderer);
+        }
+    }
+
+    private void OnRelease(SelectExitEventArgs e)
+    {
+        if (SnapZone != null)
+        {
+            MeshRenderer meshRenderer = SnapZone.MeshRenderer;
+            SnapZone.Highlight(false, meshRenderer);
         }
     }
 }
