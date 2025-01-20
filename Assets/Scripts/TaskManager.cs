@@ -79,7 +79,21 @@ public class TaskManager : MonoBehaviour
         return true;
     }
 
-    
+    public bool AllTasksCompleted1()
+    {
+        int completedCount = 0;
+        foreach (var t in tasks)
+        {
+            if (t.isCompleted)
+            {
+                completedCount++;
+                if (completedCount >= 3)
+                    return true;
+            }
+        }
+        return false;
+    }
+
     public void DecideOnAudio()
     {
         if (tasks.Count == 3)
