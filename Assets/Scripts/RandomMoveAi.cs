@@ -8,13 +8,13 @@ public class RandomMoveAi : MonoBehaviour
     public float roomSizeX = 10f; // Size of the room along the X axis
     public float roomSizeZ = 10f; // Size of the room along the Z axis
     public float rotationSpeed = 5f; // Speed at which the AI rotates towards its target
-    public
+    public ScriptesAIPosition ScriptesAIPosition;
 
     public NavMeshAgent agent;   // Reference to the NavMeshAgent
     public float stuckTimeout = 20f; // Timeout before resetting target if stuck
     private float timeSinceLastMove; // Time since the last target change
     private float timeSinceTargetStart; // Time since the current target was set
-    private float timeSinceTargetReached; // Time since the current target was set
+    public float timeSinceTargetReached; // Time since the current target was set
     private bool scriptedTarget = false; // Flag to track if the AI is following a scripted target
     private float scriptedTargetDelay = 0f; // Time to wait at the scripted target before resuming random movement
 
@@ -52,24 +52,31 @@ public class RandomMoveAi : MonoBehaviour
         {
             if (scriptedTarget)
             {
+                ScriptesAIPosition.Arrived = true;
+                agent.speed = 0;
                 // If the AI is at a scripted target, wait for the delay before resuming random movement
                 if (timeSinceTargetReached >= scriptedTargetDelay)
                 {
-                    scriptedTarget = false; // Resume random movement
-                    SetRandomTargetPosition();
+                    ScriptesAIPosition.que++;
+                    ScriptesAIPosition.Arrived = false;
+                    timeSinceTargetReached = 0f;
                     timeSinceLastMove = 0f; // Reset the timer
                     timeSinceTargetStart = 0f; // Reset the stuck timer
-                    timeSinceTargetReached = 0f; // Reset the target reached timer
+                    scriptedTarget = false; // Resume random movement
+                    SetRandomTargetPosition();
+                    agent.speed = moveSpeed;
                 }
             }
             else
             {
+                agent.speed = 0;
                 // If the AI is at a random target, set a new random target after the moveTime
                 if (timeSinceLastMove >= moveTime)
                 {
                     SetRandomTargetPosition();
                     timeSinceLastMove = 0f; // Reset the timer
                     timeSinceTargetStart = 0f; // Reset the stuck timer
+                    agent.speed = moveSpeed;
                 }
             }
         }
@@ -91,7 +98,7 @@ public class RandomMoveAi : MonoBehaviour
 
         // Rotate the AI to face the target position smoothly
         Vector3 directionToTarget = targetPosition - transform.position;
-        if (directionToTarget != Vector3.zero) // Avoid errors when at the target position
+        if (directionToTarget != Vector3.zero && agent.speed != 0) // Avoid errors when at the target position
         {
             Quaternion targetRotation = Quaternion.LookRotation(directionToTarget); // Calculate the rotation needed
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime); // Smoothly rotate the AI
@@ -101,6 +108,7 @@ public class RandomMoveAi : MonoBehaviour
     // Sets a new random target position within the room's boundaries
     void SetRandomTargetPosition()
     {
+        agent.speed = moveSpeed;
         targetPosition = GetRandomNavMeshPosition();
         agent.SetDestination(targetPosition); // Move the agent to the new target
     }
@@ -150,10 +158,13 @@ public class RandomMoveAi : MonoBehaviour
     // Public method to set a scripted target position and delay
     public void SetScriptedTarget(Vector3 newTarget, float delay)
     {
+        agent.speed = moveSpeed;
         scriptedTarget = true; // Set the flag to indicate a scripted target
         targetPosition = newTarget; // Set the new target position
         agent.SetDestination(targetPosition); // Move the agent to the new target
         scriptedTargetDelay = delay; // Set the delay time
-        timeSinceTargetReached = 0f; // Reset the target reached timer
+        timeSinceLastMove = 0f; // Reset the timer
+        timeSinceTargetStart = 0f; // Reset the stuck timer
+        timeSinceTargetReached = 0f; // Reset the target reached time
     }
 }

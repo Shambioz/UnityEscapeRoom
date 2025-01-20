@@ -5,6 +5,7 @@ public class RecoverFall : MonoBehaviour
 {
     public float recoverheight;
     public bool alive = false;
+    public bool kill = false;
     public float height;
     public float lastfall = 0f;
     public RagDollControl RagDollControl;
@@ -28,7 +29,7 @@ public class RecoverFall : MonoBehaviour
         deathtimer = RagDollControl.Clock.GameTime - lastfall;
 
         //Temp Input Method
-        if (deathtimer >= RagDollControl.deathtimer && RagDollControl.diedonce == false)
+        if (kill == true)
         {
             Debug.Log("10 seconds have passed since the game started!");
             RagDollControl.currentstate = AgentState.Ragdoll;
