@@ -59,7 +59,7 @@ public class SnapZone : MonoBehaviour
 
     public void SnapHip(GameObject snappedObject)
     {
-        if (snapPoint != null)
+        if (snapPointHip != null)
         {
             snappedObject.transform.position = snapPointHip.position;
             snappedObject.transform.rotation = snapPointHip.rotation;
@@ -74,7 +74,7 @@ public class SnapZone : MonoBehaviour
 
     public void SnapGlasses(GameObject snappedObject)
     {
-        if (snapPoint != null)
+        if (snapPointGlasses != null)
         {
             snappedObject.transform.position = snapPointGlasses.position;
             snappedObject.transform.rotation = snapPointGlasses.rotation;
