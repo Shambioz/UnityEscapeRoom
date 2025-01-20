@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class ScriptesAIPosition : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class ScriptesAIPosition : MonoBehaviour
     public bool Arrived = false;
     public float que = 0f;
     private RecoverFall RecoverFall;
+    public NavMeshObstacle obstacle;
 
 
     private void Awake()
@@ -27,6 +29,7 @@ public class ScriptesAIPosition : MonoBehaviour
 
         aiScript.SetScriptedTarget(newTarget.position, delay);
         aiScript.ScriptesAIPosition = this;
+        obstacle.enabled = !obstacle.enabled;
 
     }
     /*
