@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ScriptesAIPosition : MonoBehaviour
@@ -20,6 +21,15 @@ public class ScriptesAIPosition : MonoBehaviour
     {
         RecoverFall = FindAnyObjectByType<RecoverFall>();
     }
+
+    public void Startcutscene()
+    {
+
+        aiScript.SetScriptedTarget(newTarget.position, delay);
+        aiScript.ScriptesAIPosition = this;
+
+    }
+    /*
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -28,7 +38,7 @@ public class ScriptesAIPosition : MonoBehaviour
             aiScript.ScriptesAIPosition = this;
         }
     }
-
+    */
     private void Update()
     {
         if (que == 1 && newTarget2 != null) 

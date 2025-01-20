@@ -10,6 +10,7 @@ public class Task
     public string taskName;
     public bool isCompleted = false;
     public TextMeshProUGUI Text;
+    
 
     public void MarkCompleted()
     {
@@ -26,6 +27,7 @@ public class TaskManager : MonoBehaviour
     [SerializeField] private List<Task> tasks = new List<Task>();
     public AudioClip[] audioClips;
     public AudioSource AudioSource;
+    public ScriptesAIPosition ScriptesAIPosition;
 
     private void Awake()
     {
@@ -62,11 +64,17 @@ public class TaskManager : MonoBehaviour
         }
     }
 
-    public bool AllTasksCompleted()
+    public bool AllTasksCompleted(ScriptesAIPosition ScriptesAIPosition)
     {
         foreach (var t in tasks)
         {
-            if (!t.isCompleted) return false;
+            if (!t.isCompleted) 
+            {
+
+                ScriptesAIPosition.Startcutscene();
+
+            }
+            return false;
         }
         return true;
     }
@@ -91,6 +99,4 @@ public class TaskManager : MonoBehaviour
             AudioManager.Instance.PlaySound(AudioSource, audioClips[3]);
         }
     }
-
-    
 }
