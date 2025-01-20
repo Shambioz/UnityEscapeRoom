@@ -10,6 +10,7 @@ TagManager:
   - OldMan
   - Controller
   - HipBag
+  - Glasses
   layers:
   - Default
   - TransparentFX
