@@ -17,6 +17,7 @@ public class RandomMoveAi : MonoBehaviour
     public float timeSinceTargetReached; // Time since the current target was set
     private bool scriptedTarget = false; // Flag to track if the AI is following a scripted target
     private float scriptedTargetDelay = 0f; // Time to wait at the scripted target before resuming random movement
+    public bool randoMove = true;
 
     public Vector3 targetPosition;
 
@@ -67,7 +68,7 @@ public class RandomMoveAi : MonoBehaviour
                     agent.speed = moveSpeed;
                 }
             }
-            else
+            else if (randoMove == true)
             {
                 agent.speed = 0;
                 // If the AI is at a random target, set a new random target after the moveTime
@@ -82,7 +83,7 @@ public class RandomMoveAi : MonoBehaviour
         }
 
         // If the AI has been trying to reach the target for too long and hasn't arrived, change the target
-        if (timeSinceTargetStart >= stuckTimeout && !HasReachedTarget() && !scriptedTarget)
+        if (timeSinceTargetStart >= stuckTimeout && !HasReachedTarget() && !scriptedTarget && randoMove == true)
         {
             SetRandomTargetPosition();
             timeSinceLastMove = 0f; // Reset the timer

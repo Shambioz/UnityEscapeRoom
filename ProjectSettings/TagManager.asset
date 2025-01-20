@@ -11,6 +11,8 @@ TagManager:
   - Controller
   - HipBag
   - Glasses
+  - Key
+  - Oldman
   layers:
   - Default
   - TransparentFX

@@ -17,6 +17,7 @@ public class ScriptesAIPosition : MonoBehaviour
     public float que = 0f;
     private RecoverFall RecoverFall;
     public NavMeshObstacle obstacle;
+    public bool receivedKey = false;
 
 
     private void Awake()
@@ -29,8 +30,11 @@ public class ScriptesAIPosition : MonoBehaviour
 
         aiScript.SetScriptedTarget(newTarget.position, delay);
         aiScript.ScriptesAIPosition = this;
-        obstacle.enabled = !obstacle.enabled;
-
+        aiScript.randoMove = false;
+        if (obstacle != null)
+        {
+            obstacle.enabled = false;
+        }
     }
     /*
     void OnTriggerEnter(Collider other)
@@ -44,7 +48,7 @@ public class ScriptesAIPosition : MonoBehaviour
     */
     private void Update()
     {
-        if (que == 1 && newTarget2 != null) 
+        if (que == 1 && newTarget2 != null && receivedKey == true) 
         {
             aiScript.SetScriptedTarget(newTarget2.position, delay);
             aiScript.ScriptesAIPosition = this;

@@ -71,8 +71,6 @@ public class TaskManager : MonoBehaviour
             if (!t.isCompleted) 
             {
 
-                ScriptesAIPosition.Startcutscene();
-
             }
             return false;
         }
