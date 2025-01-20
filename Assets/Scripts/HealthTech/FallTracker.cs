@@ -19,10 +19,6 @@ public class FallTracker : MonoBehaviour
 
     private void OnGrabbed(SelectEnterEventArgs e)
     {
-        if(SnapZone == null)
-        {
-            SnapZone = FindFirstObjectByType<SnapZone>();
-        }
         if(SnapZone !=  null)
         {
             SnapZone.Highlight(true);
